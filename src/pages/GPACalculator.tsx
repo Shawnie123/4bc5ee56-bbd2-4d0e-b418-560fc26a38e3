@@ -62,24 +62,27 @@ const GPACalculator = () => {
     return lowerName.includes('advanced') || lowerName.includes('adv') || lowerName.includes('ap');
   };
 
-  const gradeToPoints = (grade: string, isAdvanced: boolean, isCore: boolean) => {
-    const gradeUpper = grade.toUpperCase();
+  const numericalGradeToPoints = (grade: string, isAdvanced: boolean, isCore: boolean) => {
+    const numGrade = parseFloat(grade);
+    
+    if (isNaN(numGrade) || numGrade < 0 || numGrade > 100) {
+      return null;
+    }
+
     let basePoints = 0;
 
-    switch (gradeUpper) {
-      case 'A+': case 'A': basePoints = 4.0; break;
-      case 'A-': basePoints = 3.7; break;
-      case 'B+': basePoints = 3.3; break;
-      case 'B': basePoints = 3.0; break;
-      case 'B-': basePoints = 2.7; break;
-      case 'C+': basePoints = 2.3; break;
-      case 'C': basePoints = 2.0; break;
-      case 'C-': basePoints = 1.7; break;
-      case 'D+': basePoints = 1.3; break;
-      case 'D': basePoints = 1.0; break;
-      case 'F': basePoints = 0.0; break;
-      default: return null;
-    }
+    if (numGrade >= 97) basePoints = 4.0;
+    else if (numGrade >= 93) basePoints = 4.0;
+    else if (numGrade >= 90) basePoints = 3.7;
+    else if (numGrade >= 87) basePoints = 3.3;
+    else if (numGrade >= 83) basePoints = 3.0;
+    else if (numGrade >= 80) basePoints = 2.7;
+    else if (numGrade >= 77) basePoints = 2.3;
+    else if (numGrade >= 73) basePoints = 2.0;
+    else if (numGrade >= 70) basePoints = 1.7;
+    else if (numGrade >= 67) basePoints = 1.3;
+    else if (numGrade >= 65) basePoints = 1.0;
+    else basePoints = 0.0;
 
     if (isAdvanced) {
       return Math.min(basePoints + 2.0, 6.0); // Advanced classes get +2 points, max 6.0
@@ -103,7 +106,7 @@ const GPACalculator = () => {
 
     validClasses.forEach(cls => {
       const isAdvanced = isAdvancedClass(cls.name);
-      const points = gradeToPoints(cls.grade, isAdvanced, cls.isCore);
+      const points = numericalGradeToPoints(cls.grade, isAdvanced, cls.isCore);
       
       if (points !== null) {
         totalPoints += points;
@@ -161,10 +164,13 @@ const GPACalculator = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor={`grade-${cls.id}`}>Grade (A, B+, C-, etc.)</Label>
+                  <Label htmlFor={`grade-${cls.id}`}>Grade (0-100)</Label>
                   <Input
                     id={`grade-${cls.id}`}
-                    placeholder="e.g., A, B+, C-"
+                    placeholder="e.g., 95, 87, 92"
+                    type="number"
+                    min="0"
+                    max="100"
                     value={cls.grade}
                     onChange={(e) => updateClass(cls.id, 'grade', e.target.value)}
                     className="focus-input"
