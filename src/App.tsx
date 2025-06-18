@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import Dashboard from "./pages/Dashboard";
 import Flashcards from "./pages/Flashcards";
 import Notes from "./pages/Notes";
+import GPACalculator from "./pages/GPACalculator";
 import Navigation from "./components/Navigation";
 import FlashcardDeck from "./pages/FlashcardDeck";
 import StudySession from "./pages/StudySession";
@@ -55,6 +56,7 @@ const App = () => {
                 <Route path="/flashcards/:deckId" element={<FlashcardDeck />} />
                 <Route path="/study/:deckId" element={<StudySession />} />
                 <Route path="/notes" element={<Notes />} />
+                <Route path="/gpa" element={<GPACalculator />} />
               </Routes>
               <Navigation />
             </div>

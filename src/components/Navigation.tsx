@@ -1,6 +1,6 @@
 
 import { useLocation, useNavigate } from "react-router-dom";
-import { Home, BookOpen, FileText } from "lucide-react";
+import { Home, BookOpen, FileText, Calculator } from "lucide-react";
 
 const Navigation = () => {
   const location = useLocation();
@@ -10,6 +10,7 @@ const Navigation = () => {
     { path: "/", icon: Home, label: "Dashboard" },
     { path: "/flashcards", icon: BookOpen, label: "Flashcards" },
     { path: "/notes", icon: FileText, label: "Notes" },
+    { path: "/gpa", icon: Calculator, label: "GPA" },
   ];
 
   return (
